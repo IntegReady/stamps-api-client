@@ -1,0 +1,31 @@
+{
+    "name": "integready/stamps-api-client",
+    "description": "Stamps.com API Client for creating shipping labels.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Viktor Chistyakov",
+            "email": "vityachis@gmail.com"
+        },
+        {
+            "name": "Yevhen Tretiak",
+            "email": "minister87@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "ext-curl": "*",
+        "ext-soap": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "integready\\stamps\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "integready\\stamps\\": "tests/"
+        }
+    }
+}
