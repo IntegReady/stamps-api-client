@@ -417,62 +417,24 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
-    public function create($filename = null)
+    public function checkBalance()
     {
-        // 1. Check account balance
-
         $accountInfoResponse = $this->soapClient->GetAccountInfo([
             'Credentials' => $this->getCredentials(),
         ]);
 
         $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
 
-        if ($availableBalance < 3) {
-            throw new ApiException('Insufficient funds: ' . $availableBalance);
-        }
+        return $availableBalance >= 3;
+    }
 
-        // 2. Cleanse addresses
-
-        $cleanseFromAddressResponse = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
-            'Address'     => [
-                'FullName'    => $this->from->getFullname(),
-                'Address1'    => $this->from->getAddress1(),
-                'Address2'    => $this->from->getAddress2(),
-                'City'        => $this->from->getCity(),
-                'State'       => $this->from->getState(),
-                'ZIPcode'     => $this->from->getZipcode(),
-                'FromZIPCode' => substr($this->from->getZipcode(), 0, 3),
-            ],
-            'FromZIPCode' => $this->from->getZipcode(),
-        ]);
-
-        if (!$cleanseFromAddressResponse->CityStateZipOK) {
-            throw new ApiException('Invalid from address.');
-        }
-
-        $cleanseToAddressResponse = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
-            'Address'     => [
-                'FullName'    => $this->to->getFullname(),
-                'Address1'    => $this->to->getAddress1(),
-                'Address2'    => $this->to->getAddress2(),
-                'City'        => $this->to->getCity(),
-                'State'       => $this->to->getState(),
-                'ZIPcode'     => $this->to->getZipcode(),
-                'FromZIPCode' => substr($this->from->getZipcode(), 0, 3),
-            ],
-            'FromZIPCode' => $this->from->getZipcode(),
-        ]);
-
-        if (!$cleanseToAddressResponse->CityStateZipOK) {
-            throw new ApiException('Invalid to address.');
-        }
-
-        // 3. Get rates
-
+    /**
+     * @return array
+     */
+    public function getRateOptions()
+    {
         $rateOptions = [
             'FromZIPCode'  => substr($this->from->getZipcode(), 0, 3),
             'ToZIPCode'    => $this->to->getZipcode(),
@@ -500,7 +462,17 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
 
         $rateOptions['Rate']['Amount'] = $rates->Rates->Rate->Amount;
 
-        // 4. Generate label
+        return $rateOptions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create($filename = null)
+    {
+        if (!$this->checkBalance()) {
+            throw new ApiException('Insufficient funds');
+        }
 
         $labelOptions = [
             'Credentials'    => $this->getCredentials(),
@@ -509,7 +481,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
             'ImageType'      => $this->imageType,
             'Mode'           => $this->mode,
 
-            'Rate' => $rateOptions,
+            'Rate' => $this->getRateOptions(),
 
             'From' => [
                 'FullName' => $this->from->getFullname(),
@@ -548,73 +520,10 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
-    public function checkAddress()
+    public function isValidAddress()
     {
-        $cleanseFromAddressResponse = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
-            'Address'     => [
-                'FullName'    => $this->from->getFullname(),
-                'Address1'    => $this->from->getAddress1(),
-                'Address2'    => $this->from->getAddress2(),
-                'City'        => $this->from->getCity(),
-                'State'       => $this->from->getState(),
-                'ZIPcode'     => $this->from->getZipcode(),
-                'FromZIPCode' => substr($this->from->getZipcode(), 0, 3),
-            ],
-            'FromZIPCode' => $this->from->getZipcode(),
-        ]);
-
-        if (!$cleanseFromAddressResponse->CityStateZipOK) {
-            return false;
-        }
-
-        $cleanseToAddressResponse = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
-            'Address'     => [
-                'FullName'    => $this->to->getFullname(),
-                'Address1'    => $this->to->getAddress1(),
-                'Address2'    => $this->to->getAddress2(),
-                'City'        => $this->to->getCity(),
-                'State'       => $this->to->getState(),
-                'ZIPcode'     => $this->to->getZipcode(),
-                'FromZIPCode' => substr($this->from->getZipcode(), 0, 3),
-            ],
-            'FromZIPCode' => $this->from->getZipcode(),
-        ]);
-
-        if (!$cleanseToAddressResponse->CityStateZipOK) {
-            return false;
-        }
-
-        $rateOptions = [
-            'FromZIPCode'  => substr($this->from->getZipcode(), 0, 3),
-            'ToZIPCode'    => $this->to->getZipcode(),
-            'ToCountry'    => $this->to->getCountry(),
-            'WeightOz'     => $this->weightOz,
-            'WeightLb'     => '0.0',
-            'ShipDate'     => $this->shipDate,
-            'ServiceType'  => $this->serviceType,
-            'PackageType'  => $this->packageType,
-            'PrintLayout'  => $this->printLayout,
-            'InsuredValue' => '0.0',
-            'AddOns'       => [],
-        ];
-
-        if (!$this->showPrice) {
-            $rateOptions['AddOns'][] = [
-                'AddOnType' => 'SC-A-HP' // Hide price on label
-            ];
-        }
-
-        $rates = $this->soapClient->GetRates([
-            'Credentials' => $this->getCredentials(),
-            'Rate'        => $rateOptions,
-        ]);
-
-        $rateOptions['Rate']['Amount'] = $rates->Rates->Rate->Amount;
-
         $labelOptions = [
             'Credentials'    => $this->getCredentials(),
             'IntegratorTxID' => time(),
@@ -622,17 +531,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
             'ImageType'      => $this->imageType,
             'Mode'           => $this->mode,
 
-            'Rate' => $rateOptions,
-
-            'From' => [
-                'FullName' => $this->from->getFullname(),
-                'Address1' => $this->from->getAddress1(),
-                'Address2' => $this->from->getAddress2(),
-                'City'     => $this->from->getCity(),
-                'Country'  => $this->from->getCountry(),
-                'State'    => $this->from->getState(),
-                'ZIPCode'  => $this->from->getZipcode(),
-            ],
+            'Rate' => $this->getRateOptions(),
 
             'To' => [
                 'FullName' => $this->to->getFullname(),
