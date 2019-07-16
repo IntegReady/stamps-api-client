@@ -259,7 +259,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setIsSampleOnly($flag)
     {
-        $this->isSampleOnly = (bool)$flag;
+        $this->isSampleOnly = (bool) $flag;
 
         return $this;
     }
@@ -277,7 +277,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setImageType($type)
     {
-        $this->imageType = (string)$type;
+        $this->imageType = (string) $type;
 
         return $this;
     }
@@ -295,7 +295,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setMode($mode)
     {
-        $this->mode = (string)$mode;
+        $this->mode = (string) $mode;
 
         return $this;
     }
@@ -313,7 +313,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setPackageType($type)
     {
-        $this->packageType = (string)$type;
+        $this->packageType = (string) $type;
 
         return $this;
     }
@@ -331,7 +331,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setPrintLayout($type)
     {
-        $this->printLayout = (string)$type;
+        $this->printLayout = (string) $type;
 
         return $this;
     }
@@ -349,7 +349,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setServiceType($type)
     {
-        $this->serviceType = (string)$type;
+        $this->serviceType = (string) $type;
 
         return $this;
     }
@@ -367,7 +367,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setWeightOz($weight)
     {
-        $this->weightOz = (float)$weight;
+        $this->weightOz = (float) $weight;
 
         return $this;
     }
@@ -403,7 +403,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function setShowPrice($flag)
     {
-        $this->showPrice = (bool)$flag;
+        $this->showPrice = (bool) $flag;
 
         return $this;
     }
@@ -427,10 +427,10 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
             'Credentials' => $this->getCredentials(),
         ]);
 
-        $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
+        $availableBalance = (double) $accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
 
         if ($availableBalance < 3) {
-            throw new ApiException('Insufficient funds: ' . $availableBalance);
+            throw new ApiException('Insufficient funds: '.$availableBalance);
         }
 
         // 2. Cleanse addresses
@@ -484,11 +484,11 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
             'PackageType'  => $this->packageType,
             'PrintLayout'  => $this->printLayout,
             'InsuredValue' => '0.0',
-            'AddOns'       => [],
+            'AddOns'       => [ ],
         ];
 
         if (!$this->showPrice) {
-            $rateOptions['AddOns'][] = [
+            $rateOptions[ 'AddOns' ][ ] = [
                 'AddOnType' => 'SC-A-HP' // Hide price on label
             ];
         }
@@ -498,7 +498,7 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
             'Rate'        => $rateOptions,
         ]);
 
-        $rateOptions['Rate']['Amount'] = $rates->Rates->Rate->Amount;
+        $rateOptions[ 'Rate' ][ 'Amount' ] = $rates->Rates->Rate->Amount;
 
         // 4. Generate label
 
