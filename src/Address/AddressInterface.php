@@ -1,6 +1,6 @@
 <?php
 
-namespace integready\Stamps\Address;
+namespace integready\stamps\address;
 
 /**
  * Interface for creating a mailing address.
@@ -9,6 +9,7 @@ interface AddressInterface
 {
     /**
      * @param string $fullname
+     *
      * @return $this
      */
     public function setFullname($fullname);
@@ -20,6 +21,7 @@ interface AddressInterface
 
     /**
      * @param string $address1
+     *
      * @return $this
      */
     public function setAddress1($address1);
@@ -31,6 +33,7 @@ interface AddressInterface
 
     /**
      * @param string $address2
+     *
      * @return $this
      */
     public function setAddress2($address2);
@@ -42,6 +45,7 @@ interface AddressInterface
 
     /**
      * @param string $city
+     *
      * @return $this
      */
     public function setCity($city);
@@ -53,6 +57,7 @@ interface AddressInterface
 
     /**
      * @param string $state
+     *
      * @return $this
      */
     public function setState($state);
@@ -64,6 +69,7 @@ interface AddressInterface
 
     /**
      * @param string $zipcode
+     *
      * @return $this
      */
     public function setZipcode($zipcode);
@@ -75,6 +81,7 @@ interface AddressInterface
 
     /**
      * @param string $country
+     *
      * @return $this
      */
     public function setCountry($country = 'US');

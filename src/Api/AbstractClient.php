@@ -1,8 +1,8 @@
 <?php
 
-namespace integready\Stamps\Api;
+namespace integready\stamps\api;
 
-use \SoapClient;
+use SoapClient;
 
 /**
  * Base API client.
@@ -40,7 +40,7 @@ abstract class AbstractClient implements ClientInterface
     public function __construct()
     {
         $this->soapClient = new SoapClient($this->apiUrl, [
-            'exceptions' => true
+            'exceptions' => true,
         ]);
     }
 
@@ -51,6 +51,7 @@ abstract class AbstractClient implements ClientInterface
     {
         $this->apiUrl = $url;
         $this->soapClient->__setLocation($this->apiUrl);
+
         return $this;
     }
 
@@ -67,7 +68,8 @@ abstract class AbstractClient implements ClientInterface
      */
     public function setApiIntegrationId($integrationId)
     {
-        $this->apiIntegrationId = (string) $integrationId;
+        $this->apiIntegrationId = (string)$integrationId;
+
         return $this;
     }
 
@@ -84,7 +86,8 @@ abstract class AbstractClient implements ClientInterface
      */
     public function setApiUserId($userId)
     {
-        $this->apiUserId = (string) $userId;
+        $this->apiUserId = (string)$userId;
+
         return $this;
     }
 
@@ -101,7 +104,8 @@ abstract class AbstractClient implements ClientInterface
      */
     public function setApiPassword($password)
     {
-        $this->apiPassword = (string) $password;
+        $this->apiPassword = (string)$password;
+
         return $this;
     }
 
@@ -121,7 +125,7 @@ abstract class AbstractClient implements ClientInterface
     protected function getAuthToken()
     {
         $response = $this->soapClient->AuthenticateUser([
-            'Credentials' => $this->getCredentials()
+            'Credentials' => $this->getCredentials(),
         ]);
 
         return $response->Authenticator;
@@ -135,7 +139,7 @@ abstract class AbstractClient implements ClientInterface
         return [
             'IntegrationID' => $this->apiIntegrationId,
             'Username'      => $this->apiUserId,
-            'Password'      => $this->apiPassword
+            'Password'      => $this->apiPassword,
         ];
     }
 }

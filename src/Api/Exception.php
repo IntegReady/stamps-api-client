@@ -1,8 +1,10 @@
 <?php
 
-namespace integready\Stamps\Api;
+namespace integready\stamps\api;
 
 /**
  * Exception thrown for whatever reason.
  */
-class Exception extends \Exception {}
+class Exception extends \Exception
+{
+}

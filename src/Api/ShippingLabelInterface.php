@@ -1,8 +1,8 @@
 <?php
 
-namespace integready\Stamps\Api;
+namespace integready\stamps\api;
 
-use integready\Stamps\Address\AddressInterface;
+use integready\stamps\address\AddressInterface;
 
 /**
  * Client interface to generate shipping labels.
@@ -13,6 +13,7 @@ interface ShippingLabelInterface
      * Generates shipping label and optionally saves to file.
      *
      * @param string $filename
+     *
      * @return string The URL to the generated label.
      * @throws \Exception
      */
@@ -20,6 +21,7 @@ interface ShippingLabelInterface
 
     /**
      * @param AddressInterface $from
+     *
      * @return $this
      */
     public function setFrom(AddressInterface $from);
@@ -31,6 +33,7 @@ interface ShippingLabelInterface
 
     /**
      * @param AddressInterface $to
+     *
      * @return $this
      */
     public function setTo(AddressInterface $to);
@@ -42,6 +45,7 @@ interface ShippingLabelInterface
 
     /**
      * @param bool $flag
+     *
      * @return $this
      */
     public function setIsSampleOnly($flag);
@@ -53,6 +57,7 @@ interface ShippingLabelInterface
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setImageType($type);
@@ -64,6 +69,7 @@ interface ShippingLabelInterface
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setPackageType($type);
@@ -75,6 +81,7 @@ interface ShippingLabelInterface
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setServiceType($type);
@@ -86,6 +93,7 @@ interface ShippingLabelInterface
 
     /**
      * @param float $weight
+     *
      * @return $this
      */
     public function setWeightOz($weight);
@@ -97,6 +105,7 @@ interface ShippingLabelInterface
 
     /**
      * @param string $date
+     *
      * @return $this
      */
     public function setShipDate($date);
@@ -108,6 +117,7 @@ interface ShippingLabelInterface
 
     /**
      * @param bool $flag
+     *
      * @return $this
      */
     public function setShowPrice($flag);

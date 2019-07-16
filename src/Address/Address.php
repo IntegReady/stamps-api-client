@@ -47,7 +47,8 @@ class Address implements AddressInterface
      */
     public function setFullname($fullname)
     {
-        $this->fullname = (string) $fullname;
+        $this->fullname = (string)$fullname;
+
         return $this;
     }
 
@@ -64,7 +65,8 @@ class Address implements AddressInterface
      */
     public function setAddress1($address1)
     {
-        $this->address1 = (string) $address1;
+        $this->address1 = (string)$address1;
+
         return $this;
     }
 
@@ -81,7 +83,8 @@ class Address implements AddressInterface
      */
     public function setAddress2($address2)
     {
-        $this->address2 = (string) $address2;
+        $this->address2 = (string)$address2;
+
         return $this;
     }
 
@@ -98,7 +101,8 @@ class Address implements AddressInterface
      */
     public function setCity($city)
     {
-        $this->city = (string) $city;
+        $this->city = (string)$city;
+
         return $this;
     }
 
@@ -115,7 +119,8 @@ class Address implements AddressInterface
      */
     public function setState($state)
     {
-        $this->state = (string) $state;
+        $this->state = (string)$state;
+
         return $this;
     }
 
@@ -132,7 +137,8 @@ class Address implements AddressInterface
      */
     public function setZipcode($zipcode)
     {
-        $this->zipcode = (string) $zipcode;
+        $this->zipcode = (string)$zipcode;
+
         return $this;
     }
 
@@ -149,7 +155,8 @@ class Address implements AddressInterface
      */
     public function setCountry($country = 'US')
     {
-        $this->country = (string) $country;
+        $this->country = (string)$country;
+
         return $this;
     }
 

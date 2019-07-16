@@ -8,7 +8,7 @@ Stamps API Client for creating shipping labels, envelopes, checking addresses, e
 $to   = []; // Sender's address
 $from = []; // Address of the recipient
 
-$toAddress = (new \integready\Stamps\Address\Address())
+$toAddress = (new \integready\stamps\address\Address())
     ->setFullname($to['fullname'])
     ->setAddress1($to['address1'])
     ->setAddress2($to['address2'])
@@ -17,7 +17,7 @@ $toAddress = (new \integready\Stamps\Address\Address())
     ->setZipcode($to['zipCode'])
     ->setCountry($to['country']);
 
-$fromAddress = (new \integready\Stamps\Address\Address())
+$fromAddress = (new \integready\stamps\address\Address())
     ->setFullname($from['fullname'])
     ->setAddress1($from['address1'])
     ->setAddress2($from['address2'])
@@ -27,16 +27,16 @@ $fromAddress = (new \integready\Stamps\Address\Address())
     ->setCountry($from['country']);
 
 try {
-    $shippingLabel = (new  \integready\Stamps\Api\Envelope())
+    $shippingLabel = (new  \integready\stamps\api\Envelope())
         ->setApiUrl(API_URL) // Leave out for default
         ->setApiIntegrationId(YOUR_API_INTEGRATION_ID)
         ->setApiUserId(YOUR_API_USER_ID)
         ->setApiPassword(YOUR_API_PASSWORD)
-        ->setImageType(\IntegReady\Stamps\Api\Envelope::IMAGE_TYPE_PNG)
-        ->setPackageType(\IntegReady\Stamps\Api\Envelope::RATE_PACKAGE_TYPE_LETTER)
-        ->setServiceType(\IntegReady\Stamps\Api\Envelope::RATE_SERVICE_TYPE_US_FC)
-        ->setPrintLayout(\IntegReady\Stamps\Api\Envelope::RATE_PRINT_LAYOUT_ENVELOPE10)
-        ->setMode(\IntegReady\Stamps\Api\Envelope::MODE_NOPOSTAGE)
+        ->setImageType(\integready\stamps\api\Envelope::IMAGE_TYPE_PNG)
+        ->setPackageType(\integready\stamps\api\Envelope::RATE_PACKAGE_TYPE_LETTER)
+        ->setServiceType(\integready\stamps\api\Envelope::RATE_SERVICE_TYPE_US_FC)
+        ->setPrintLayout(\integready\stamps\api\Envelope::RATE_PRINT_LAYOUT_ENVELOPE10)
+        ->setMode(\integready\stamps\api\Envelope::MODE_NOPOSTAGE)
         ->setFrom($fromAddress)
         ->setTo($toAddress)
         ->setIsSampleOnly(false)

@@ -1,9 +1,9 @@
 <?php
 
-namespace integready\Stamps\Api;
+namespace integready\stamps\api;
 
 use Exception as ApiException;
-use integready\Stamps\Address\AddressInterface;
+use integready\stamps\address\AddressInterface;
 
 /**
  * Client to generate shipping labels.

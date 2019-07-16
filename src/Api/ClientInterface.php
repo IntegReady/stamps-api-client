@@ -1,6 +1,6 @@
 <?php
 
-namespace integready\Stamps\Api;
+namespace integready\stamps\api;
 
 /**
  * Base interface for API clients.
@@ -9,6 +9,7 @@ interface ClientInterface
 {
     /**
      * @param string $url
+     *
      * @return $this
      */
     public function setApiUrl($url);
@@ -20,6 +21,7 @@ interface ClientInterface
 
     /**
      * @param string $integrationId
+     *
      * @return $this
      */
     public function setApiIntegrationId($integrationId);
@@ -31,6 +33,7 @@ interface ClientInterface
 
     /**
      * @param string $userId
+     *
      * @return $this
      */
     public function setApiUserId($userId);
@@ -42,6 +45,7 @@ interface ClientInterface
 
     /**
      * @param string $password
+     *
      * @return $this
      */
     public function setApiPassword($password);
