@@ -409,62 +409,10 @@ class ShippingLabel extends AbstractClient implements ShippingLabelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function create($filename = null)
+    public function getRateOptions()
     {
-        // 1. Check account balance
-
-        $accountInfoResponse = $this->soapClient->GetAccountInfo([
-            'Credentials' => $this->getCredentials(),
-        ]);
-
-        $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
-
-        if ($availableBalance < 3) {
-            throw new ApiException('Insufficient funds: ' . $availableBalance);
-        }
-
-        // 2. Cleanse addresses
-
-        $cleanseFromAddressResponse = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
-            'Address'     => [
-                'FullName'    => $this->from->getFullname(),
-                'Address1'    => $this->from->getAddress1(),
-                'Address2'    => $this->from->getAddress2(),
-                'City'        => $this->from->getCity(),
-                'State'       => $this->from->getState(),
-                'ZIPcode'     => $this->from->getZipcode(),
-                'FromZIPCode' => substr($this->from->getZipcode(), 0, 3),
-            ],
-            'FromZIPCode' => $this->from->getZipcode(),
-        ]);
-
-        if (!$cleanseFromAddressResponse->CityStateZipOK) {
-            throw new ApiException('Invalid from address.');
-        }
-
-        $cleanseToAddressResponse = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
-            'Address'     => [
-                'FullName'    => $this->to->getFullname(),
-                'Address1'    => $this->to->getAddress1(),
-                'Address2'    => $this->to->getAddress2(),
-                'City'        => $this->to->getCity(),
-                'State'       => $this->to->getState(),
-                'ZIPcode'     => $this->to->getZipcode(),
-                'FromZIPCode' => substr($this->from->getZipcode(), 0, 3),
-            ],
-            'FromZIPCode' => $this->from->getZipcode(),
-        ]);
-
-        if (!$cleanseToAddressResponse->CityStateZipOK) {
-            throw new ApiException('Invalid to address.');
-        }
-
-        // 3. Get rates
-
         $rateOptions = [
             'FromZIPCode'  => substr($this->from->getZipcode(), 0, 3),
             'ToZIPCode'    => $this->to->getZipcode(),
@@ -492,7 +440,31 @@ class ShippingLabel extends AbstractClient implements ShippingLabelInterface
 
         $rateOptions['Rate']['Amount'] = $rates->Rates->Rate->Amount;
 
-        // 4. Generate label
+        return $rateOptions;
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkBalance()
+    {
+        $accountInfoResponse = $this->soapClient->GetAccountInfo([
+            'Credentials' => $this->getCredentials(),
+        ]);
+
+        $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
+
+        return $availableBalance >= 3;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create($filename = null)
+    {
+        if (!$this->checkBalance()) {
+            throw new ApiException('Insufficient funds');
+        }
 
         $labelOptions = [
             'Credentials'    => $this->getCredentials(),
@@ -501,7 +473,7 @@ class ShippingLabel extends AbstractClient implements ShippingLabelInterface
             'ImageType'      => $this->imageType,
             'Mode'           => $this->mode,
 
-            'Rate' => $rateOptions,
+            'Rate' => $this->getRateOptions(),
 
             'From' => [
                 'FullName' => $this->from->getFullname(),
@@ -524,7 +496,7 @@ class ShippingLabel extends AbstractClient implements ShippingLabelInterface
             ],
         ];
 
-        $indiciumResponse = $this->soapClient->CreateIndicium($labelOptions);
+        $indiciumResponse = $this->soapClient->CreateEnvelopeIndicium($labelOptions);
 
         if ($filename) {
             $ch = curl_init($indiciumResponse->URL);
