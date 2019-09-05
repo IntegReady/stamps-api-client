@@ -422,7 +422,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
     public function checkBalance()
     {
         $accountInfoResponse = $this->soapClient->GetAccountInfo([
-            'Credentials' => $this->getAuthToken(),
+            'Authenticator' => $this->getAuthToken(),
         ]);
         $this->setAuthToken($accountInfoResponse->Authenticator);
 
@@ -457,8 +457,8 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         }
 
         $rates = $this->soapClient->GetRates([
-            'Credentials' => $this->getAuthToken(),
-            'Rate'        => $rateOptions,
+            'Authenticator' => $this->getAuthToken(),
+            'Rate'          => $rateOptions,
         ]);
         $this->setAuthToken($rates->Authenticator);
 
@@ -477,7 +477,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         }
 
         $labelOptions = [
-            'Credentials'    => $this->getAuthToken(),
+            'Authenticator'  => $this->getAuthToken(),
             'IntegratorTxID' => time(),
             'SampleOnly'     => $this->isSampleOnly,
             'ImageType'      => $this->imageType,
@@ -528,8 +528,8 @@ class Envelope extends AbstractClient implements EnvelopeInterface
     public function isValidAddress()
     {
         $cleanseAddress = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getAuthToken(),
-            'Address'     => [
+            'Authenticator' => $this->getAuthToken(),
+            'Address'       => [
                 'FullName' => $this->to->getFullname(),
                 'Address1' => $this->to->getAddress1(),
                 'Address2' => $this->to->getAddress2(),
@@ -538,7 +538,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
                 'State'    => $this->to->getState(),
                 'ZIPCode'  => $this->to->getZipcode(),
             ],
-            'FromZIPCode' => $this->from->getZipcode(),
+            'FromZIPCode'   => $this->from->getZipcode(),
         ]);
         $this->setAuthToken($cleanseAddress->Authenticator);
 
