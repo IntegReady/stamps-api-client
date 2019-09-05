@@ -487,8 +487,9 @@ class Envelope extends AbstractClient implements EnvelopeInterface
 
             'From' => [
                 'FullName' => $this->from->getFullname(),
-                'Address1' => $this->from->getAddress1(),
-                'Address2' => $this->from->getAddress2(),
+                'Address1' => $this->from->getAddress1() ?? '',
+                'Address2' => $this->from->getAddress2() ?? '',
+                'Address3' => $this->from->getAddress3() ?? '',
                 'City'     => $this->from->getCity(),
                 'Country'  => $this->from->getCountry(),
                 'State'    => $this->from->getState(),
@@ -497,8 +498,9 @@ class Envelope extends AbstractClient implements EnvelopeInterface
 
             'To' => [
                 'FullName' => $this->to->getFullname(),
-                'Address1' => $this->to->getAddress1(),
-                'Address2' => $this->to->getAddress2(),
+                'Address1' => $this->to->getAddress1() ?? '',
+                'Address2' => $this->to->getAddress2() ?? '',
+                'Address3' => $this->to->getAddress3() ?? '',
                 'City'     => $this->to->getCity(),
                 'Country'  => $this->to->getCountry(),
                 'State'    => $this->to->getState(),
@@ -531,8 +533,9 @@ class Envelope extends AbstractClient implements EnvelopeInterface
             'Authenticator' => $this->getAuthToken(),
             'Address'       => [
                 'FullName' => $this->to->getFullname(),
-                'Address1' => $this->to->getAddress1(),
-                'Address2' => $this->to->getAddress2(),
+                'Address1' => $this->to->getAddress1() ?? '',
+                'Address2' => $this->to->getAddress2() ?? '',
+                'Address3' => $this->to->getAddress3() ?? '',
                 'City'     => $this->to->getCity(),
                 'Country'  => $this->to->getCountry(),
                 'State'    => $this->to->getState(),

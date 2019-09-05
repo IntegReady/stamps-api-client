@@ -21,6 +21,10 @@ class Address implements AddressInterface
      * @var string
      */
     protected $address2;
+    /**
+     * @var string
+     */
+    protected $address3;
 
     /**
      * @var string
@@ -94,6 +98,24 @@ class Address implements AddressInterface
     public function getAddress2()
     {
         return $this->address2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAddress3($address3)
+    {
+        $this->address3 = (string)$address3;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAddress3()
+    {
+        return $this->address3;
     }
 
     /**

@@ -44,6 +44,18 @@ interface AddressInterface
     public function getAddress2();
 
     /**
+     * @param string $address3
+     *
+     * @return $this
+     */
+    public function setAddress3($address3);
+
+    /**
+     * @return string
+     */
+    public function getAddress3();
+
+    /**
      * @param string $city
      *
      * @return $this
