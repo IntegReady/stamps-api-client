@@ -422,7 +422,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
     public function checkBalance()
     {
         $accountInfoResponse = $this->soapClient->GetAccountInfo([
-            'Credentials' => $this->getCredentials(),
+            'Credentials' => $this->getAuthToken(),
         ]);
 
         $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
@@ -456,7 +456,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         }
 
         $rates = $this->soapClient->GetRates([
-            'Credentials' => $this->getCredentials(),
+            'Credentials' => $this->getAuthToken(),
             'Rate'        => $rateOptions,
         ]);
 
@@ -475,7 +475,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         }
 
         $labelOptions = [
-            'Credentials'    => $this->getCredentials(),
+            'Credentials'    => $this->getAuthToken(),
             'IntegratorTxID' => time(),
             'SampleOnly'     => $this->isSampleOnly,
             'ImageType'      => $this->imageType,
@@ -525,7 +525,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
     public function isValidAddress()
     {
         $cleanseAddress = $this->soapClient->CleanseAddress([
-            'Credentials' => $this->getCredentials(),
+            'Credentials' => $this->getAuthToken(),
             'Address'     => [
                 'FullName' => $this->to->getFullname(),
                 'Address1' => $this->to->getAddress1(),

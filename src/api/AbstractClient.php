@@ -35,6 +35,11 @@ abstract class AbstractClient implements ClientInterface
     protected $soapClient;
 
     /**
+     * @var string
+     */
+    protected $authenticateUser;
+
+    /**
      * @throws \Exception
      */
     public function __construct()
@@ -124,11 +129,15 @@ abstract class AbstractClient implements ClientInterface
      */
     protected function getAuthToken()
     {
-        $response = $this->soapClient->AuthenticateUser([
-            'Credentials' => $this->getCredentials(),
-        ]);
+        if (empty($this->authenticateUser)) {
+            $response = $this->soapClient->AuthenticateUser([
+                'Credentials' => $this->getCredentials(),
+            ]);
 
-        return $response->Authenticator;
+            $this->authenticateUser = $response->Authenticator;
+        }
+
+        return $this->authenticateUser;
     }
 
     /**
