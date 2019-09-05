@@ -8,7 +8,7 @@ use integready\stamps\address\AddressInterface;
 /**
  * Client to generate shipping labels.
  */
-class Envelope extends AbstractClient implements ShippingLabelInterface
+class Envelope extends AbstractClient implements EnvelopeInterface
 {
     const RATE_SERVICE_TYPE_US_FC     = 'US-FC';
     const RATE_SERVICE_TYPE_US_MM     = 'US-MM';
@@ -524,16 +524,9 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
      */
     public function isValidAddress()
     {
-        $labelOptions = [
-            'Credentials'    => $this->getCredentials(),
-            'IntegratorTxID' => time(),
-            'SampleOnly'     => true,
-            'ImageType'      => $this->imageType,
-            'Mode'           => $this->mode,
-
-            'Rate' => $this->getRateOptions(),
-
-            'To' => [
+        $cleanseAddress = $this->soapClient->CleanseAddress([
+            'Credentials' => $this->getCredentials(),
+            'Address'     => [
                 'FullName' => $this->to->getFullname(),
                 'Address1' => $this->to->getAddress1(),
                 'Address2' => $this->to->getAddress2(),
@@ -542,14 +535,9 @@ class Envelope extends AbstractClient implements ShippingLabelInterface
                 'State'    => $this->to->getState(),
                 'ZIPCode'  => $this->to->getZipcode(),
             ],
-        ];
+            'FromZIPCode' => $this->from->getZipcode(),
+        ]);
 
-        try {
-            $this->soapClient->CreateEnvelopeIndicium($labelOptions);
-        } catch (\Exception $ex) {
-            return false;
-        }
-
-        return true;
+        return $cleanseAddress->CityStateZipOK;
     }
 }

@@ -7,7 +7,7 @@ use integready\stamps\address\AddressInterface;
 /**
  * Client interface to generate shipping labels.
  */
-interface ShippingLabelInterface
+interface EnvelopeInterface
 {
     /**
      * Generates shipping label and optionally saves to file.
