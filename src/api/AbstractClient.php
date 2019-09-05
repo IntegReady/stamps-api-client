@@ -134,10 +134,18 @@ abstract class AbstractClient implements ClientInterface
                 'Credentials' => $this->getCredentials(),
             ]);
 
-            $this->authenticateUser = $response->Authenticator;
+            $this->setAuthToken($response->Authenticator);
         }
 
         return $this->authenticateUser;
+    }
+
+    /**
+     * @param string $authenticator
+     */
+    protected function setAuthToken($authenticator)
+    {
+        $this->authenticateUser = $authenticator;
     }
 
     /**

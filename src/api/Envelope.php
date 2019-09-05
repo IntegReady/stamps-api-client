@@ -424,6 +424,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         $accountInfoResponse = $this->soapClient->GetAccountInfo([
             'Credentials' => $this->getAuthToken(),
         ]);
+        $this->setAuthToken($accountInfoResponse->Authenticator);
 
         $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
 
@@ -459,6 +460,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
             'Credentials' => $this->getAuthToken(),
             'Rate'        => $rateOptions,
         ]);
+        $this->setAuthToken($rates->Authenticator);
 
         $rateOptions['Rate']['Amount'] = $rates->Rates->Rate->Amount;
 
@@ -505,6 +507,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         ];
 
         $indiciumResponse = $this->soapClient->CreateEnvelopeIndicium($labelOptions);
+        $this->setAuthToken($indiciumResponse->Authenticator);
 
         if ($filename) {
             $ch = curl_init($indiciumResponse->URL);
@@ -537,6 +540,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
             ],
             'FromZIPCode' => $this->from->getZipcode(),
         ]);
+        $this->setAuthToken($cleanseAddress->Authenticator);
 
         return $cleanseAddress->CityStateZipOK;
     }
