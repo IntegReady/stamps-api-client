@@ -477,13 +477,12 @@ class Envelope extends AbstractClient implements EnvelopeInterface
         }
 
         $labelOptions = [
+            'Rate'           => $this->getRateOptions(),
             'Authenticator'  => $this->getAuthToken(),
             'IntegratorTxID' => time(),
             'SampleOnly'     => $this->isSampleOnly,
             'ImageType'      => $this->imageType,
             'Mode'           => $this->mode,
-
-            'Rate' => $this->getRateOptions(),
 
             'From' => [
                 'FullName' => $this->from->getFullname(),
