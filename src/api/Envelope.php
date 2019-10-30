@@ -524,9 +524,9 @@ class Envelope extends AbstractClient implements EnvelopeInterface
     }
 
     /**
-     * @return bool
+     * @return mixed
      */
-    public function isValidAddress()
+    public function getCleanse()
     {
         $cleanseAddress = $this->soapClient->CleanseAddress([
             'Authenticator' => $this->getAuthToken(),
@@ -543,6 +543,16 @@ class Envelope extends AbstractClient implements EnvelopeInterface
             'FromZIPCode'   => $this->from->getZipcode(),
         ]);
         $this->setAuthToken($cleanseAddress->Authenticator);
+
+        return $cleanseAddress;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValidAddress()
+    {
+        $cleanseAddress = $this->getCleanse();
 
         return $cleanseAddress->CityStateZipOK;
     }
