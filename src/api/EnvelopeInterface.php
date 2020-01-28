@@ -68,6 +68,18 @@ interface EnvelopeInterface
     public function getImageType();
 
     /**
+     * @param string $mode
+     *
+     * @return $this
+     */
+    public function setMode($mode);
+
+    /**
+     * @return string
+     */
+    public function getMode();
+
+    /**
      * @param string $type
      *
      * @return $this
@@ -78,6 +90,18 @@ interface EnvelopeInterface
      * @return string
      */
     public function getPackageType();
+
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setPrintLayout($type);
+
+    /**
+     * @return string
+     */
+    public function getPrintLayout();
 
     /**
      * @param string $type
