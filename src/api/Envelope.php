@@ -421,14 +421,20 @@ class Envelope extends AbstractClient implements EnvelopeInterface
      */
     public function checkBalance()
     {
+        return $this->getBalance() >= 3;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBalance()
+    {
         $accountInfoResponse = $this->soapClient->GetAccountInfo([
             'Authenticator' => $this->getAuthToken(),
         ]);
         $this->setAuthToken($accountInfoResponse->Authenticator);
 
-        $availableBalance = (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
-
-        return $availableBalance >= 3;
+        return (double)$accountInfoResponse->AccountInfo->PostageBalance->AvailablePostage;
     }
 
     /**

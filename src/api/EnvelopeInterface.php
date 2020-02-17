@@ -150,4 +150,14 @@ interface EnvelopeInterface
      * @return bool
      */
     public function getShowPrice();
+
+    /**
+     * @return bool
+     */
+    public function checkBalance();
+
+    /**
+     * @return float
+     */
+    public function getBalance();
 }
