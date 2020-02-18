@@ -3,7 +3,6 @@
 namespace integready\stamps\api;
 
 use integready\stamps\address\AddressInterface;
-use integready\stamps\api\Envelope as APIEnvelope;
 
 /**
  * Client interface to generate shipping labels.
