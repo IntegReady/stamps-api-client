@@ -476,7 +476,7 @@ class Envelope extends AbstractClient implements EnvelopeInterface
     /**
      * {@inheritdoc}
      */
-    public function create($filename = null)
+    public function getEnvelope($filename = null)
     {
         if (!$this->checkBalance()) {
             throw new ApiException('Insufficient funds');
@@ -526,7 +526,15 @@ class Envelope extends AbstractClient implements EnvelopeInterface
             fclose($fp);
         }
 
-        return $indiciumResponse->URL;
+        return $indiciumResponse;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create($filename = null)
+    {
+        return $this->getEnvelope($filename)->URL;
     }
 
     /**

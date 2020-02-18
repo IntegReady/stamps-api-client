@@ -3,6 +3,7 @@
 namespace integready\stamps\api;
 
 use integready\stamps\address\AddressInterface;
+use integready\stamps\api\Envelope as APIEnvelope;
 
 /**
  * Client interface to generate shipping labels.
@@ -18,6 +19,15 @@ interface EnvelopeInterface
      * @throws \Exception
      */
     public function create($filename = null);
+
+    /**
+     *
+     * @param string $filename
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getEnvelope($filename = null);
 
     /**
      * @param AddressInterface $from
