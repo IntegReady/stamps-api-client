@@ -20,6 +20,15 @@ interface EnvelopeInterface
     public function create($filename = null);
 
     /**
+     *
+     * @param string $filename
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getEnvelope($filename = null);
+
+    /**
      * @param AddressInterface $from
      *
      * @return $this
