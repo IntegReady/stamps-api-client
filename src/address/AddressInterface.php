@@ -92,6 +92,18 @@ interface AddressInterface
     public function getZipcode();
 
     /**
+     * @param string $zipcodeAddOn
+     *
+     * @return $this
+     */
+    public function setZipcodeAddOn($zipcodeAddOn);
+
+    /**
+     * @return string
+     */
+    public function getZipcodeAddOn();
+
+    /**
      * @param string $country
      *
      * @return $this
