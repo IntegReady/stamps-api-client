@@ -502,14 +502,15 @@ class Envelope extends AbstractClient implements EnvelopeInterface
             ],
 
             'To' => [
-                'FullName' => $this->to->getFullname(),
-                'Address1' => $this->to->getAddress1() ?? '',
-                'Address2' => $this->to->getAddress2() ?? '',
-                'Address3' => $this->to->getAddress3() ?? '',
-                'City'     => $this->to->getCity(),
-                'Country'  => $this->to->getCountry(),
-                'State'    => $this->to->getState(),
-                'ZIPCode'  => $this->to->getZipcode(),
+                'FullName'      => $this->to->getFullname(),
+                'Address1'      => $this->to->getAddress1() ?? '',
+                'Address2'      => $this->to->getAddress2() ?? '',
+                'Address3'      => $this->to->getAddress3() ?? '',
+                'City'          => $this->to->getCity(),
+                'Country'       => $this->to->getCountry(),
+                'State'         => $this->to->getState(),
+                'ZIPCode'       => $this->to->getZipcode(),
+                'ZIPCodeAddOn'  => $this->to->getZipcodeAddOn(),
             ],
         ];
 

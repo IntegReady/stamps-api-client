@@ -44,6 +44,11 @@ class Address implements AddressInterface
     /**
      * @var string
      */
+    protected $zipcodeAddOn;
+
+    /**
+     * @var string
+     */
     protected $country = 'US';
 
     /**
@@ -170,6 +175,24 @@ class Address implements AddressInterface
     public function getZipcode()
     {
         return $this->zipcode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setZipcodeAddOn($zipcodeAddOn)
+    {
+        $this->zipcodeAddOn = (string)$zipcodeAddOn;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getZipcodeAddOn()
+    {
+        return $this->zipcodeAddOn;
     }
 
     /**
