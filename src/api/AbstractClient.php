@@ -55,7 +55,9 @@ abstract class AbstractClient implements ClientInterface
     public function setApiUrl($url)
     {
         $this->apiUrl = $url;
-        $this->soapClient->__setLocation($this->apiUrl);
+        $this->soapClient->SoapClient($this->apiUrl, [
+            'exceptions' => true,
+        ]);
 
         return $this;
     }
